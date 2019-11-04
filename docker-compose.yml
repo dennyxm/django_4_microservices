@@ -1,0 +1,25 @@
+version: "3.5"
+
+services:
+  db:
+    image: postgres:10.1
+    volumes:
+      - postgresql-volume:/var/lib/postgresql/data
+
+  djangoapp:
+    build: .
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/djangoapp
+    command : ./entrypoint.sh
+    environment:
+      - ALLOWED_HOST_PUSH=djangoapp
+volumes:
+  postgresql-volume:
+
+networks:
+  default:
+   name: bootcamp13
